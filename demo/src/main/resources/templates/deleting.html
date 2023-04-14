@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>what to add</title>
+  <style>
+    body {
+      background-color: #f2f2f2;
+      font-family: Arial, sans-serif;
+    }
+
+    .container {
+      margin: 50px auto;
+      width: 80%;
+      max-width: 600px;
+      text-align: center;
+    }
+
+    h1 {
+      color: #333;
+      text-align: center;
+    }
+
+    form {
+      display: inline-block;
+      margin: 20px;
+    }
+
+    button {
+      background-color: #333333;
+      color: white;
+      padding: 14px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    button:hover {
+      background-color: #413c3c;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>Bank System</h1>
+  <form action="/Bank/BranchDeleting" method = "get">
+    <button type="submit">close Branch</button>
+  </form>
+  <form action="/Bank/DeleteById" method="get">
+    <button type="submit">Delete</button>
+  </form>
+</div>
+</body>
+</html>

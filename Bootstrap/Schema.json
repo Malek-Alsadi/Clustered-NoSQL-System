@@ -1,0 +1,19 @@
+{
+  "definitions": {},
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "Id": {
+      "title": "Id",
+      "type": "string",
+      "default": 0
+    },
+    "Password": {
+      "title": "Password",
+      "type": "string",
+      "default": ""
+    }
+  },
+  "required": ["Id", "Password"],
+  "additionalProperties": false
+}

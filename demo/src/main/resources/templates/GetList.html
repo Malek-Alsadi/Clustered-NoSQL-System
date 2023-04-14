@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Bank System</title>
+  <style>
+    body {
+      background-color: #f2f2f2;
+      font-family: Arial, sans-serif;
+    }
+
+    .container {
+      margin: 50px auto;
+      width: 80%;
+      max-width: 600px;
+      text-align: center;
+    }
+
+    h1 {
+      color: #333;
+      text-align: center;
+    }
+
+    form {
+      display: inline-block;
+      margin: 20px;
+    }
+
+    button {
+      background-color: #333333;
+      color: white;
+      padding: 14px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    button:hover {
+      background-color: #413c3c;
+    }
+  </style>
+</head>
+<body>x
+<div class="container">
+  <h1>Bank System</h1>
+
+  <form action="/Bank/Getting/costumerID">
+    <button type="submit">get Costumer Info</button>
+  </form>
+
+  <form action="/Bank/Getting/employeeID">
+    <button type="submit">get Employee Info</button>
+  </form>
+
+  <form action="/Bank/Getting/CostumerWithName">
+    <button type="submit">get Costumers with certain name</button>
+  </form>
+
+  <form action="/Bank/Getting/AllEmployee">
+    <button type="submit">get all Employees</button>
+  </form>
+
+</div>
+</body>
+</html>

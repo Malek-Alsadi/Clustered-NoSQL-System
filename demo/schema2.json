@@ -1,0 +1,29 @@
+{
+  "definitions": {},
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "Id": {
+      "title": "Id",
+      "type": "string",
+      "default": 0
+    },
+    "Name": {
+      "title": "Name",
+      "type": "string",
+      "default": ""
+    },
+    "Role": {
+      "title": "Role",
+      "type": "string",
+      "default": ""
+    },
+    "Salary": {
+      "title": "Salary",
+      "type": "number",
+      "default": 0
+    }
+  },
+  "required": ["Id", "Name","Role","Salary"],
+  "additionalProperties": false
+}

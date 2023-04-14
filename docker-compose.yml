@@ -1,0 +1,54 @@
+version: '3'
+services:
+  worker1:
+    build: ./worker
+    restart: always
+    container_name: worker1
+    ports:
+      - "8090:8090"
+    networks:
+      - my-network
+
+  worker2:
+    build: ./worker
+    restart: always
+    container_name: worker2
+    ports:
+      - "8091:8090"
+    networks:
+      - my-network
+
+  worker3:
+    build: ./worker
+    restart: always
+    container_name: worker3
+    ports:
+      - "8092:8090"
+    networks:
+      - my-network
+      
+  worker4:
+    build: ./worker
+    restart: always
+    container_name: worker4
+    ports:
+      - "8093:8090"
+    networks:
+      - my-network
+
+  bootstrap:
+    build: ./Bootstrap
+    restart: always
+    container_name: bootstrap
+    ports:
+      - "8080:8080"
+    depends_on:
+      - worker1
+      - worker2
+      - worker3
+      - worker4
+    networks:
+      - my-network
+
+networks:
+  my-network:

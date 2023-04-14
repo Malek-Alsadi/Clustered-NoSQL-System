@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Bank Account Creation Form</title>
+  <style>
+    body {
+      background-color: #f2f2f2;
+      font-family: Arial, sans-serif;
+      color: #333333;
+    }
+    h1 {
+      text-align: center;
+      margin-top: 50px;
+      margin-bottom: 50px;
+      font-weight: bold;
+      font-size: 36px;
+      color: #333333;
+    }
+    form {
+      width: 600px;
+      margin: 0 auto;
+      background-color: #ffffff;
+      padding: 50px;
+      border-radius: 10px;
+      box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+    }
+    label {
+      display: inline-block;
+      margin-bottom: 10px;
+      font-weight: bold;
+      font-size: 16px;
+    }
+    input[type="text"], input[type="number"] {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #cccccc;
+      font-size: 16px;
+      margin-bottom: 20px;
+    }
+    input[type="submit"] {
+      background-color: #0066cc;
+      color: #ffffff;
+      font-size: 18px;
+      font-weight: bold;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    input[type="submit"]:hover {
+      background-color: #003366;
+    }
+    .error-message {
+      color: #ff0000;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+<h1>Bank Account Creation Form</h1>
+<form action="/Bank/Add/Costumer" method="post">
+
+  <label for="Branch">Branch Name:</label>
+  <input type="text" id="Branch" name="Branch" required>
+
+  <label for="Id">Account ID:</label>
+  <input type="text" id="Id" name="Id" required>
+
+  <label for="Name">Account Name:</label>
+  <input type="Next" id="Name" name="Name" required>
+
+  <label for="Balance">Account Balance:</label>
+  <input type="number" id="Balance" name="Balance" required>
+
+
+
+  <input type="submit" value="Create Account">
+</form>
+</body>
+</html>

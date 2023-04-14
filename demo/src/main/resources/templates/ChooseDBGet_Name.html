@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Enter Your Name</title>
+  <style>
+    /* Background color */
+    body {
+      background-color: #f2f2f2;
+    }
+
+    /* Form container */
+    .form-container {
+      background-color: #ffffff;
+      margin: 50px auto;
+      max-width: 500px;
+      padding: 20px;
+      text-align: center;
+    }
+
+    /* Form label */
+    .form-label {
+      display: block;
+      font-size: 20px;
+      margin-bottom: 10px;
+      text-align: left;
+    }
+
+    /* Form input */
+    .form-input {
+      border: 2px solid #ddd;
+      border-radius: 5px;
+      font-size: 16px;
+      padding: 10px;
+      width: 100%;
+    }
+
+    /* Submit button */
+    .submit-button {
+      background-color: #4CAF50;
+      border: none;
+      border-radius: 5px;
+      color: #ffffff;
+      cursor: pointer;
+      font-size: 16px;
+      margin-top: 10px;
+      padding: 10px;
+      width: 100%;
+    }
+
+    /* Submit button hover */
+    .submit-button:hover {
+      background-color: #3e8e41;
+    }
+  </style>
+</head>
+<body>
+<div class="form-container">
+  <h1>Bank System</h1>
+  <form method="post" action="/Bank/Getting/CostumersByName">
+
+    <label for="Database" class="form-label">Enter Branch Name:</label>
+    <input type="text" id="Database" name="Database" class="form-input" required>
+
+    <label for="Name" class="form-label">Enter Costumers Name:</label>
+    <input type="text" id="Name" name="Name" class="form-input" required>
+
+    <button type="submit" class="submit-button">Submit</button>
+  </form>
+</div>
+</body>
+</html>
