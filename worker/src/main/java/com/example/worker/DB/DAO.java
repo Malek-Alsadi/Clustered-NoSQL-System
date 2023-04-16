@@ -2,9 +2,9 @@ package com.example.worker.DB;
 
 import com.example.worker.FeedBack;
 import com.example.worker.Indexing.DatabaseIndex;
-import com.example.worker.synch_key.Collection_key;
-import com.example.worker.synch_key.Database_Key;
-import com.example.worker.synch_key.Record_key;
+import com.example.worker.synch_key.Collection_lock;
+import com.example.worker.synch_key.Database_lock;
+import com.example.worker.synch_key.Record_lock;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -26,8 +26,8 @@ public class DAO {
             return DirPath + database;
     }
     public FeedBack createDatabase(String database) {
-        Database_Key key = new Database_Key(database);
-        synchronized (key) {
+        Database_lock lock = new Database_lock(database);
+        synchronized (lock) {
             File dbDir = new File(getPath(database, false));
             if (dbDir.exists() && dbDir.isDirectory()) {
                 return new FeedBack("Database already exists.", 300);
@@ -44,8 +44,8 @@ public class DAO {
     }
 
     public FeedBack addCollection(String Database, String Collection, String schema) {
-        Collection_key key = new Collection_key(Database,Collection);
-        synchronized (key) {
+        Collection_lock lock = new Collection_lock(Database,Collection);
+        synchronized (lock) {
             try {
                 File dbDir = new File(getPath(Database, false));
                 if (!dbDir.exists()) {
@@ -79,8 +79,8 @@ public class DAO {
     }
 
     public FeedBack dropCollection(String Database, String Collection){
-        Collection_key key = new Collection_key(Database,Collection);
-        synchronized (key) {
+        Collection_lock lock = new Collection_lock(Database,Collection);
+        synchronized (lock) {
             File dbFile = new File(getPath(Database, false));
             if (!dbFile.exists() || !dbFile.isDirectory())
                 return new FeedBack("Database: " + Database + " not exist", 302);
@@ -94,8 +94,8 @@ public class DAO {
         }
     }
     public FeedBack dropDatabase(String Database){
-        Database_Key key = new Database_Key(Database);
-        synchronized (key) {
+        Database_lock lock = new Database_lock(Database);
+        synchronized (lock) {
             File dbFile = new File(getPath(Database, false));
             if (!dbFile.exists() || !dbFile.isDirectory())
                 return new FeedBack("Database " + Database + " not exist", 302);
@@ -135,8 +135,8 @@ public class DAO {
                 JsonNode jsonNode = objectMapper.readTree(Json);
 
                 String Id = jsonNode.get("Id").asText();
-                Record_key key = new Record_key(Database,Collection,Id);
-                synchronized (key) {
+                Record_lock lock = new Record_lock(Database,Collection,Id);
+                synchronized (lock) {
 
                     myArray.add(jsonNode);
 
@@ -223,8 +223,8 @@ public class DAO {
         if (nodeToUpdate == null) {
             return new FeedBack("Id: " + Id + " not found", 302);
         }
-        Record_key key = new Record_key(Database,Collection,Id);
-        synchronized (key) {
+        Record_lock lock = new Record_lock(Database,Collection,Id);
+        synchronized (lock) {
 
             ((ObjectNode) nodeToUpdate).put(Property, value);
 
@@ -276,8 +276,8 @@ public class DAO {
         if(idx == -1)
             return new FeedBack("id: " + id + " not found" , 302);
 
-        Record_key key = new Record_key(database,Collection,id);
-        synchronized (key) {
+        Record_lock lock = new Record_lock(database,Collection,id);
+        synchronized (lock) {
             myArray.remove(idx);
 
             try {

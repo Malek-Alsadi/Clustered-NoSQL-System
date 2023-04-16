@@ -2,10 +2,10 @@ package com.example.worker.synch_key;
 
 import java.util.Objects;
 
-public class Record_key extends Collection_key{
+public class Record_lock extends Collection_lock {
     private String Id;
 
-    public Record_key(String Database, String collection, String Id) {
+    public Record_lock(String Database, String collection, String Id) {
         super(Database, collection);
         this.Id = Id;
     }
@@ -21,10 +21,10 @@ public class Record_key extends Collection_key{
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Record_key recordKey)) return false;
+        if (!(o instanceof Record_lock recordKey)) return false;
         if (!super.equals(o)) return false;
 
-        Collection_key key = ((Record_key) o).getKey();
+        Collection_lock key = ((Record_lock) o).getKey();
         return Objects.equals(getId(), recordKey.getId()) && key.equals(super.getKey());
     }
 
