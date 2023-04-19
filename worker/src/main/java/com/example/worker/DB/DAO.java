@@ -19,12 +19,11 @@ import java.util.List;
 
 @Repository
 public class DAO {
-    private String DirPath = "./";
     private String getPath(String database, boolean schema){
         if(schema){
-            return DirPath + database + "/schemas";
+            return "./" + database + "/schemas";
         }else
-            return DirPath + database;
+            return "./" + database;
     }
     public FeedBack createDatabase(String database) {
         Database_lock lock = new Database_lock(database);
