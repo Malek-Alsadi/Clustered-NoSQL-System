@@ -1,4 +1,4 @@
-package com.example.worker.synch_key;
+package com.example.worker.synch_locks;
 
 import java.util.Objects;
 
@@ -21,11 +21,15 @@ public class Record_lock extends Collection_lock {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Record_lock recordKey)) return false;
-        if (!super.equals(o)) return false;
+        if (!(o instanceof Database_lock)) return false;
+        if (!(o instanceof Record_lock)) {
+            return super.equals(o);
+        }
 
-        Collection_lock key = ((Record_lock) o).getKey();
-        return Objects.equals(getId(), recordKey.getId()) && key.equals(super.getKey());
+        Record_lock that = (Record_lock) o;
+        return Objects.equals(getId(), that.getId())
+                && getCollection().equals(that.getCollection())
+                && getDatabase().equals(that.getDatabase());
     }
 
     @Override

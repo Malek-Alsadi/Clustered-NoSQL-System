@@ -1,8 +1,8 @@
-package com.example.worker.synch_key;
+package com.example.worker.synch_locks;
 
 import java.util.Objects;
 
-public class Database_lock {
+public class Database_lock implements iLock{
     private String Database;
 
     public Database_lock(String Database) {

@@ -48,16 +48,18 @@ public class DAO {
             File SchemaFile = new File("./schema1.json");
             String path = SchemaFile.getPath();
             String SchemaString = new String( Files.readAllBytes(Paths.get(path)) );
-            sender.sendHttpRequest(url,userCredentials,SchemaString);
+            StringBuilder response1 = sender.sendHttpRequest(url,userCredentials,SchemaString);
 
 
             url = new URL(Url + "/api/create/collection/" + DB + "/employee");
             SchemaFile = new File("./schema2.json");
             path = SchemaFile.getPath();
             SchemaString = new String( Files.readAllBytes(Paths.get(path)) );
-            StringBuilder response = sender.sendHttpRequest(url,userCredentials,SchemaString);
+            StringBuilder response2 = sender.sendHttpRequest(url,userCredentials,SchemaString);
 
-            return response.toString();
+            String response = response1.toString() + '\n' + response2.toString();
+
+            return response;
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -71,7 +73,6 @@ public class DAO {
             String userCredentials = Token + ":" + Password;
             ObjectMapper mapper = new ObjectMapper();
             String json = mapper.writeValueAsString(customer);
-            System.out.println(json);
             StringBuilder response = sender.sendHttpRequest(url,userCredentials,json);
 
             return response.toString();
@@ -87,7 +88,6 @@ public class DAO {
             String userCredentials = Token + ":" + Password;
             ObjectMapper mapper = new ObjectMapper();
             String json = mapper.writeValueAsString(employee);
-            System.out.println(json);
             StringBuilder response = sender.sendHttpRequest(url,userCredentials,json);
 
             return response.toString();

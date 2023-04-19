@@ -2,9 +2,10 @@ package com.example.worker.DB;
 
 import com.example.worker.FeedBack;
 import com.example.worker.Indexing.DatabaseIndex;
-import com.example.worker.synch_key.Collection_lock;
-import com.example.worker.synch_key.Database_lock;
-import com.example.worker.synch_key.Record_lock;
+import com.example.worker.synch_locks.Collection_lock;
+import com.example.worker.synch_locks.Database_lock;
+import com.example.worker.synch_locks.Record_lock;
+import com.example.worker.synch_locks.locks_key;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -27,17 +28,22 @@ public class DAO {
     }
     public FeedBack createDatabase(String database) {
         Database_lock lock = new Database_lock(database);
-        synchronized (lock) {
+        locks_key chain = locks_key.getInstance();
+        Object key = chain.getLock(lock);
+        synchronized (key) {
             File dbDir = new File(getPath(database, false));
             if (dbDir.exists() && dbDir.isDirectory()) {
+                chain.dropLock(lock);
                 return new FeedBack("Database already exists.", 300);
             }
 
             if (!dbDir.mkdirs()) {
+                chain.dropLock(lock);
                 return new FeedBack("Error creating database.", 400);
             } else {
                 File schemasDir = new File(getPath(database, true));
                 schemasDir.mkdirs();
+                chain.dropLock(lock);
                 return new FeedBack("Database created successfully.", 201);
             }
         }
@@ -45,7 +51,9 @@ public class DAO {
 
     public FeedBack addCollection(String Database, String Collection, String schema) {
         Collection_lock lock = new Collection_lock(Database,Collection);
-        synchronized (lock) {
+        locks_key chain = locks_key.getInstance();
+        Object key = chain.getLock(lock);
+        synchronized (key) {
             try {
                 File dbDir = new File(getPath(Database, false));
                 if (!dbDir.exists()) {
@@ -59,6 +67,7 @@ public class DAO {
 
                 File jsonFile = new File(getPath(Database, false) + '/' + Collection + ".json");
                 createEmptyJsonArray(jsonFile);
+                chain.dropLock(lock);
                 return new FeedBack("JSON saved successfully.", 201);
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -80,30 +89,42 @@ public class DAO {
 
     public FeedBack dropCollection(String Database, String Collection){
         Collection_lock lock = new Collection_lock(Database,Collection);
-        synchronized (lock) {
+        locks_key chain = locks_key.getInstance();
+        Object key = chain.getLock(lock);
+        synchronized (key) {
             File dbFile = new File(getPath(Database, false));
-            if (!dbFile.exists() || !dbFile.isDirectory())
+            if (!dbFile.exists() || !dbFile.isDirectory()) {
+                chain.dropLock(lock);
                 return new FeedBack("Database: " + Database + " not exist", 302);
+            }
             File schemaFile = new File(getPath(Database, true) + '/' + Collection + ".json");
             File jsonFile = new File(getPath(Database, false) + '/' + Collection + ".json");
-            if (!schemaFile.exists() || !jsonFile.exists())
+            if (!schemaFile.exists() || !jsonFile.exists()) {
+                chain.dropLock(lock);
                 return new FeedBack("Collection: " + Collection + " not exist", 302);
+            }
             schemaFile.delete();
             jsonFile.delete();
+            chain.dropLock(lock);
             return new FeedBack("dropping Collection " + Collection + " done", 202);
         }
     }
     public FeedBack dropDatabase(String Database){
         Database_lock lock = new Database_lock(Database);
-        synchronized (lock) {
+        locks_key chain = locks_key.getInstance();
+        Object key = chain.getLock(lock);
+        synchronized (key) {
             File dbFile = new File(getPath(Database, false));
-            if (!dbFile.exists() || !dbFile.isDirectory())
+            if (!dbFile.exists() || !dbFile.isDirectory()) {
+                chain.dropLock(lock);
                 return new FeedBack("Database " + Database + " not exist", 302);
+            }
             try {
                 FileUtils.deleteDirectory(dbFile);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
+            chain.dropLock(lock);
             return new FeedBack("dropping Database " + Database + " done", 202);
         }
     }
@@ -136,13 +157,16 @@ public class DAO {
 
                 String Id = jsonNode.get("Id").asText();
                 Record_lock lock = new Record_lock(Database,Collection,Id);
-                synchronized (lock) {
+                locks_key chain = locks_key.getInstance();
+                Object key = chain.getLock(lock);
+                synchronized ( key ) {
 
                     myArray.add(jsonNode);
 
                     FileWriter writer = new FileWriter(jsonPath);
                     objectMapper.writeValue(writer, root);
                     writer.close();
+                    chain.dropLock(lock);
                 }
 
             } catch (Exception e) {
@@ -224,7 +248,9 @@ public class DAO {
             return new FeedBack("Id: " + Id + " not found", 302);
         }
         Record_lock lock = new Record_lock(Database,Collection,Id);
-        synchronized (lock) {
+        locks_key chain = locks_key.getInstance();
+        Object key = chain.getLock(lock);
+        synchronized (key) {
 
             ((ObjectNode) nodeToUpdate).put(Property, value);
 
@@ -233,6 +259,7 @@ public class DAO {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
+            chain.dropLock(lock);
         }
 
         return new FeedBack("update done", 204);
@@ -277,7 +304,9 @@ public class DAO {
             return new FeedBack("id: " + id + " not found" , 302);
 
         Record_lock lock = new Record_lock(database,Collection,id);
-        synchronized (lock) {
+        locks_key chain = locks_key.getInstance();
+        Object key = chain.getLock(lock);
+        synchronized (key) {
             myArray.remove(idx);
 
             try {
@@ -285,6 +314,7 @@ public class DAO {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
+            chain.dropLock(lock);
         }
 
         return new FeedBack("delete done", 202);

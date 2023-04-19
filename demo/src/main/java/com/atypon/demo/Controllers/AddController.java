@@ -35,7 +35,7 @@ public class AddController {
         String Password = session.getAttribute("Password").toString();
         String url = session.getAttribute("URL").toString();
         String result = addingService.addingBranchs(name,Token,Password,url);
-        result += addingService.addingCollection(name,Token,Password,url);
+        result += '\n' + addingService.addingCollection(name,Token,Password,url);
         model.addAttribute("result",result);
         model.addAttribute("link","/Bank/Home");
         return "statusPage";

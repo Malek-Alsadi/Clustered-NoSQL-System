@@ -24,8 +24,11 @@ public class GetService {
     }
     public Customers getCostumerById(String Database, String Id, String Token, String Password, String Url){
         JsonNode jsonNode = dao.getById(Database,"costumers",Id,Token,Password,Url);
-        if(jsonNode == null)
+        if( jsonNode == null )
             return null;
+        if( jsonNode.get("Id") == null)
+            return null;
+
         String id = jsonNode.get("Id").asText();
         String name = jsonNode.get("Name").asText();
         double balance = jsonNode.get("Balance").asDouble();
@@ -35,6 +38,9 @@ public class GetService {
         JsonNode jsonNode = dao.getById(Database,"employee",Id,Token,Password,Url);
         if(jsonNode == null)
             return null;
+        if( jsonNode.get("Id") == null)
+            return null;
+
         String id = jsonNode.get("Id").asText();
         String name = jsonNode.get("Name").asText();
         String role = jsonNode.get("Role").asText();

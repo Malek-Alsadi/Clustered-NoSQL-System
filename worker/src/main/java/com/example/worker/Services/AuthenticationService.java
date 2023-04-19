@@ -17,7 +17,6 @@ public class AuthenticationService {
         this.dao = dao;
     }
 
-    @Async
     public boolean generalAuthenticated(String token,String password){
         if(token == null || token.length() == 0)
             return false;
@@ -43,7 +42,7 @@ public class AuthenticationService {
 
         return users||managers;
     }
-    @Async
+
     public boolean managerAuthenticated(String token,String password){
         if(token == null || token.length() == 0)
             return false;
@@ -54,12 +53,14 @@ public class AuthenticationService {
             return false;
 
         ObjectNode objectNode = dao.getById("main","managers",id);
+        if(dao == null)
+            return false;
+
         String pass = objectNode.get("Password").asText();
         boolean managers = pass.equals(password);
 
         return managers;
     }
-    @Async
     public String[] extractCredentials(String authorizationHeader) {
         // Remove the "Basic " prefix from the header value
         String encodedCredentials = authorizationHeader.substring("Basic ".length());

@@ -62,8 +62,11 @@ public class GetController {
         String Password = session.getAttribute("Password").toString();
         String url = session.getAttribute("URL").toString();
         Customers customer = getService.getCostumerById(Database,Id,Token,Password,url);
+        if(customer == null){
+            model.addAttribute("result","Id not exist");
+            return "statusPage";
+        }
         model.addAttribute("customer",customer);
-
         return "showCostumer";
 
     }
@@ -84,6 +87,9 @@ public class GetController {
         String Password = session.getAttribute("Password").toString();
         String url = session.getAttribute("URL").toString();
         Employee employee = getService.getEmployeeById(Database,Id,Token,Password,url);
+        if(employee == null){
+            model.addAttribute("result","Id not exist");
+        }
         model.addAttribute("employee",employee);
 
         return "showEmployee";

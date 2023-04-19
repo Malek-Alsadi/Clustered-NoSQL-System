@@ -18,18 +18,18 @@ import java.util.Map;
 @Service
 
 public class ModificationService {
-    private final DAO dbHandler;
+    private final DAO dao;
     @Autowired
-    public ModificationService(DAO dbHandler){
-        this.dbHandler = dbHandler;
+    public ModificationService(DAO dao){
+        this.dao = dao;
     }
 
     public FeedBack initDatabase(String database){
-        return dbHandler.createDatabase(database);
+        return dao.createDatabase(database);
     }
 
     public FeedBack initCollection(String Database , String Collection, String schema){
-        return dbHandler.addCollection(Database,Collection,schema);
+        return dao.addCollection(Database,Collection,schema);
     }
 
     public FeedBack addRecord(String Database, String Collection, String json){
@@ -48,7 +48,7 @@ public class ModificationService {
             throw new RuntimeException(e);
         }
 
-        FeedBack response = dbHandler.addRecord(Database,Collection,json);
+        FeedBack response = dao.addRecord(Database,Collection,json);
 
         if(response.getStatusCode() >= 300)
             return response;
@@ -76,28 +76,28 @@ public class ModificationService {
 
 
         for (Map.Entry<String, Object> entry : jsonMap.entrySet()) {
-            index.indexProperties(Database, Collection, entry.getKey(), entry.getValue().toString(), (dbHandler.arrSize(Database,Collection)-1));
+            index.indexProperties(Database, Collection, entry.getKey(), entry.getValue().toString(), (dao.arrSize(Database,Collection)-1));
         }
         return response;
     }
     public FeedBack dropCollection(String Database, String Collection){
         DatabaseIndex index = DatabaseIndex.getInstance();
         index.DropCollection(Database,Collection);
-        return dbHandler.dropCollection(Database,Collection);
+        return dao.dropCollection(Database,Collection);
     }
     public FeedBack dropDatabase(String Database){
         DatabaseIndex index = DatabaseIndex.getInstance();
         index.DropDatabase(Database);
-        return dbHandler.dropDatabase(Database);
+        return dao.dropDatabase(Database);
     }
     public FeedBack deleteById(String database, String Collection, String id){
-        FeedBack response = dbHandler.deleteWithId(database, Collection, id);
+        FeedBack response = dao.deleteWithId(database, Collection, id);
         if(response.getStatusCode() >= 300)
             return response;
 
         DatabaseIndex index = DatabaseIndex.getInstance();
         HashMap<String, List<Integer>> map1 = index.getMap(database, Collection, "Id");
-        int idx = map1.get(id+"").get(0);
+        int idx = map1.get(id).get(0);
         index.deleteByIdx(database,Collection,idx);
         return response;
     }
@@ -109,7 +109,7 @@ public class ModificationService {
             List<Integer> list = map.get(value);
 
             for(int X : list){
-                ObjectNode obj = dbHandler.objectAt(Database,Collection,X);
+                ObjectNode obj = dao.objectAt(Database,Collection,X);
                 String id = obj.get("Id").asText();
                 deleteById(Database,Collection,id);
             }
