@@ -11,7 +11,7 @@ public class TokenAuth implements iTokenAuth {
     }
     @Override
     public String generate(String payload) {
-        String token = AES.encrypt(payload,"Al-Sadi");
+        String token = AES.encrypt(payload,"secret-Key");
         return token;
     }
 

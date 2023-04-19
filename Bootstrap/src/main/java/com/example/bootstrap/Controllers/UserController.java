@@ -29,7 +29,8 @@ public class UserController implements AES {
         UserAuth userAuth = new UserAuth();
         String[] credentials = userAuth.extractCredentials(authHeader);
         String token = encrypt(credentials[0], "Al-Sadi");
-        String JsonString = userAuth.buildJSON(credentials[0], credentials[1]);
+        String encryptedPassword = encrypt(credentials[1],"secret-Key");
+        String JsonString = userAuth.buildJSON(credentials[0], encryptedPassword);
 
         Map<String, String> response = new HashMap<>();
         if(usersService.exist(credentials[0],type)){

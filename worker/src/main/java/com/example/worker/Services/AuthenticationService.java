@@ -29,15 +29,17 @@ public class AuthenticationService {
         boolean users =  dao.getById("main","users",id) != null;
         boolean managers = dao.getById("main","managers",id) != null;
 
+        String Password = tokenAuth.generate(password);
+        System.out.println( "id : " + id + "\n password : " + Password);
         if(users){
             ObjectNode objectNode = dao.getById("main","users",id);
             String pass = objectNode.get("Password").asText();
-            users = pass.equals(password);
+            users = pass.equals(Password);
         }
         if(managers){
             ObjectNode objectNode = dao.getById("main","managers",id);
             String pass = objectNode.get("Password").asText();
-            managers = pass.equals(password);
+            managers = pass.equals(Password);
         }
 
         return users||managers;
@@ -56,8 +58,9 @@ public class AuthenticationService {
         if(dao == null)
             return false;
 
+        String Password = tokenAuth.generate(password);
         String pass = objectNode.get("Password").asText();
-        boolean managers = pass.equals(password);
+        boolean managers = pass.equals(Password);
 
         return managers;
     }
