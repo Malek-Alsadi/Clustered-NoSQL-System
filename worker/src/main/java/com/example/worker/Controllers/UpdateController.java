@@ -19,16 +19,6 @@ public class UpdateController {
         this.updateService = updateService;
     }
 
-    @GetMapping("/{db_name}/{collection}/{id}/{property}")
-    @ResponseBody
-    public FeedBack Update(@PathVariable("db_name") String Database,
-                           @PathVariable("collection") String Collection,
-                           @PathVariable("id") String id,
-                           @PathVariable("property") String Property,
-                           @RequestParam("value") String value) {
-
-        return updateService.update(Database,Collection,id,Property,value);
-    }
     @PutMapping("/{db_name}/{collection}/{id}")
     @ResponseBody
     public FeedBack Update(@PathVariable("db_name") String Database,
